@@ -32,7 +32,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="affich_update.php" method="POST">
+    <form action="login.php" method="POST">
     <label for="login">Login : <input type="text" name="login" id="login"></label><br>
     <label for="password">Password : <input type="password" name="password" id="password"></label><br>
     <input type="submit" value="Envoyer">
