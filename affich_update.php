@@ -6,12 +6,13 @@ try {
         $delete = "DELETE FROM blog WHERE Id_publication = :id AND Id_auteur = :authorId";
         $result = $base->prepare($delete);
         $result->execute(array("authorId" => $_SESSION["id"], "id" => $_POST["postId"]));
-        $URL = "affich_update.php";
         header("Location:affich_update.php");
     } elseif (isset($_POST["modif"])) {
-        $URL = "update.php";
         $_SESSION["id_publication"] = $_POST["postId"];
         header("Location:update.php");
+    }elseif (isset($_POST["com"])) {
+        $_SESSION["id_publication"] = $_POST["postId"];
+        header("Location:comment.php");
     }
     ?>
 
@@ -81,15 +82,25 @@ try {
                 color: black;
             }
 
+            article form {
+                display: flex;
+                flex-direction: row;
+            }
+
             /* i {
                
             } */
 
-            article a {
+            button i {
+                padding: 10px;
+                
+            }
+
+            button {
                 display: flex;
                 align-self: flex-end;
-                margin: 10px 20px;
-                padding: 10px;
+                border: none;
+                background-color: white;
             }
 
             #red {
@@ -163,13 +174,15 @@ try {
                 echo "<img src='./photo/" . $ligne['image'] . "'></img>";
                 echo "<p>" . $ligne["login"] . "</p>";
                
-
+                $id = $ligne["Id_publication"];
                 if (isset($_SESSION["login"])) {
                     if ($ligne["login"] === $_SESSION["login"]) {
-                        $id = $ligne["Id_publication"];
+                       
                         echo "<form action='affich_update.php' method='POST'>";
                         echo "<input type='hidden' value='$id' name='postId'>";
                         echo "<button id='red' name='suppr'>SUPPRIMER</button>";
+                        echo "</form>";
+                        echo "<form action='update.php' method='POST'>";
                         echo "<button id='yellow' name='modif'>MODIFIER</button>";
                         echo "</form>";
 
@@ -178,7 +191,7 @@ try {
                     
                 }
                     
-                    echo "<a href='comment.php'><i class='fa-solid fa-comments'></i></a>";
+                    echo "<button name='com'><i class='fa-solid fa-comments'></i></a>";
 
                 echo "</form>";
                 echo "</article>";

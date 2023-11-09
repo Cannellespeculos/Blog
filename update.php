@@ -63,7 +63,7 @@
             $hashed_name = hash("md5", $name);
             $hasUploaded = move_uploaded_file($img["tmp_name"],"./photo/$hashed_name");
             
-           if($_SESSION["id_publication"]){
+           if(isset($_POST["modif"])){
                 $delete = "DELETE FROM blog WHERE Id_publication = :Id_publication";
                 $resultA = $base->prepare($delete);
                 $resultA->execute(array("Id_publication" => $_SESSION["id_publication"]));
@@ -72,7 +72,6 @@
                 $result->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
                 echo "Modification réusssie";
             } else if ($hasUploaded) {
-                echo $_SESSION["Id_publication"];
                 $resultat->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
             echo "Publication créer.";
             

@@ -13,11 +13,14 @@
     <?php
         try
         {
+            session_start();
         include("connection.php");
         $sql = "SELECT com_content, com_date FROM commentaire JOIN blog ON commentaire.Id_publ = blog.Id_publication WHERE Id_publication = :publId ";
         $resultat = $base->prepare($sql);
-        $resultat->execute(array(""));
-        echo "Personne modifiée.";
+        $resultat->execute(array("publId" => $_SESSION["id_publication"]));
+        while ($ligne = $resultat->fetch()) {
+            echo $ligne["com_content"];
+        }
         $resultat->closeCursor();
         }
         Catch(Exception $e)
