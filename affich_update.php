@@ -10,7 +10,7 @@ try {
         header("Location:affich_update.php");
     } elseif (isset($_POST["modif"])) {
         $URL = "update.php";
-        $_SESSION["id_publication"] = $ligne["Id_publication"];
+        $_SESSION["id_publication"] = $_POST["postId"];
         header("Location:update.php");
     }
     ?>
@@ -22,6 +22,7 @@ try {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
+        <script src="https://kit.fontawesome.com/6a2b59470e.js" crossorigin="anonymous"></script>
     </head>
 
     <body>
@@ -57,6 +58,40 @@ try {
                 border-color: gray;
             }
 
+            nav {
+                width: 100%;
+            }
+
+            ul {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                gap: 20px;
+                border: 1px solid grey;
+            }
+
+            li {
+                list-style: none;
+                padding: 15px 5px;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+
+            /* i {
+               
+            } */
+
+            article a {
+                display: flex;
+                align-self: flex-end;
+                margin: 10px 20px;
+                padding: 10px;
+            }
+
             #red {
                 background-color: #FE6847;
                 color: white;
@@ -78,16 +113,40 @@ try {
 
         <header>
             <h1>BLOG</h1>
-            <a href="update.php">Création de postes</a>
+            
             <?php
             if (!isset($_SESSION['login'])) {
                 echo "vous n'êtes pas connecté";
+                echo "<nav>";
+                echo "<ul>";
+                echo "<li>";
+                echo "<a href='login.php'>Se connecter</a>";
+                echo "</li>";
+                echo "<li>";
+                echo "<a href='signup.php'>Créer un compte</a>";
+                echo "</li>";
+                echo "</ul>";
+                echo " </nav>";
             } else {
                 echo "Bienvenue " . $_SESSION["login"];
+                echo "<nav>";
+                echo "<ul>";
+                echo "<li>";
+                echo "<a href='update.php'>Création de poste</a>";
+                echo "</li>";
+                echo "<li>";
+                echo "<a href='#'>Votre Compte</a>";
+                echo "</li>";
+                echo "</ul>";
             }
 
 
             ?>
+
+            
+                
+            
+           
         </header>
 
         <main>
@@ -103,6 +162,7 @@ try {
                 echo "<p>" . $ligne['commentaire'] . "</p>";
                 echo "<img src='./photo/" . $ligne['image'] . "'></img>";
                 echo "<p>" . $ligne["login"] . "</p>";
+               
 
                 if (isset($_SESSION["login"])) {
                     if ($ligne["login"] === $_SESSION["login"]) {
@@ -115,7 +175,10 @@ try {
 
 
                     }
+                    
                 }
+                    
+                    echo "<a href='comment.php'><i class='fa-solid fa-comments'></i></a>";
 
                 echo "</form>";
                 echo "</article>";

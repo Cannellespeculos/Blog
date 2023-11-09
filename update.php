@@ -63,13 +63,14 @@
             $hashed_name = hash("md5", $name);
             $hasUploaded = move_uploaded_file($img["tmp_name"],"./photo/$hashed_name");
             
-           if($_SESSION["Id_publication"]){
+           if($_SESSION["id_publication"]){
                 $delete = "DELETE FROM blog WHERE Id_publication = :Id_publication";
                 $resultA = $base->prepare($delete);
                 $resultA->execute(array("Id_publication" => $_SESSION["id_publication"]));
                 $sq = "INSERT INTO Blog (titre, commentaire, image, Date, Id_auteur) VALUES (:titre,:commentaire,:image,:date, :Id_auteur)";
                 $result = $base->prepare($sq);
                 $result->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
+                echo "Modification réusssie";
             } else if ($hasUploaded) {
                 echo $_SESSION["Id_publication"];
                 $resultat->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
