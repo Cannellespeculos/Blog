@@ -54,6 +54,19 @@
     </form>
 
     <?php
+    if(isset($_POST["modif"])){
+        $delete = "DELETE FROM blog WHERE Id_publication = :Id_publication";
+        $resultA = $base->prepare($delete);
+        $resultA->execute(array("Id_publication" => $_SESSION["id_publication"]));
+        $sq = "INSERT INTO Blog (titre, commentaire, image, Date, Id_auteur) VALUES (:titre,:commentaire,:image,:date, :Id_auteur)";
+        $result = $base->prepare($sq);
+        $result->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
+        echo "Modification réusssie";
+    }
+
+
+
+    function update($j, $resultat) {
          if (isset($_POST['titre']) && isset($_POST['commentaire']) && isset($_FILES['img']) ) {
             $img = $_FILES['img'];
             $titre = htmlspecialchars($_POST['titre']);
@@ -63,25 +76,19 @@
             $hashed_name = hash("md5", $name);
             $hasUploaded = move_uploaded_file($img["tmp_name"],"./photo/$hashed_name");
             
-           if(isset($_POST["modif"])){
-                $delete = "DELETE FROM blog WHERE Id_publication = :Id_publication";
-                $resultA = $base->prepare($delete);
-                $resultA->execute(array("Id_publication" => $_SESSION["id_publication"]));
-                $sq = "INSERT INTO Blog (titre, commentaire, image, Date, Id_auteur) VALUES (:titre,:commentaire,:image,:date, :Id_auteur)";
-                $result = $base->prepare($sq);
-                $result->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
-                echo "Modification réusssie";
-            } else if ($hasUploaded) {
+            if ($hasUploaded) {
                 $resultat->execute(array("titre" =>  $titre, "commentaire" => $commentaire, "image" => $hashed_name, "date" => $date, "Id_auteur" => $_SESSION["id"]));
             echo "Publication créer.";
             
             $resultat->closeCursor();
             }
             
-            }else {
+            }
+            else {
                 echo "</br>Informations manquantes";
             }
         }
+    }
        
     Catch(Exception $e){
     // message en cas d’erreur
